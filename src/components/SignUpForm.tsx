@@ -9,15 +9,22 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const submissionData = {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
+    };
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify(submissionData),
     });
+
+    const returnMessage = await res.json();
+    console.log(returnMessage);
   };
 
   const container = css`
@@ -42,12 +49,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit}
-          className={formContainer}
-        >
+        <Box component="form" onSubmit={handleSubmit} className={formContainer}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField

@@ -11,13 +11,19 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 export default function LoginForm() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const submissionData = {
       email: data.get("email"),
       password: data.get("password"),
+    };
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify(submissionData),
     });
+    const returnMessage = await res.json();
+    console.log(returnMessage);
   };
 
   const container = css`
@@ -38,7 +44,7 @@ export default function LoginForm() {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate>
+        <Box component="form" onSubmit={handleSubmit}>
           <TextField
             margin="normal"
             required
