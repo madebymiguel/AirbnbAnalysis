@@ -7,8 +7,11 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useRouter } from "next/router";
 
 export default function SignUp() {
+  const router = useRouter();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const userInput = new FormData(event.currentTarget);
@@ -28,7 +31,13 @@ export default function SignUp() {
     });
 
     const returnMessage = await res.json();
-    console.log(returnMessage);
+
+    if (returnMessage.message === "success") {
+      router.push("/dashboard");
+    } else {
+      console.log("nope");
+      // make a failure feature -- modal, etc
+    }
   };
 
   const container = css`
