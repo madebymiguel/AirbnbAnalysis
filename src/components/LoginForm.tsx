@@ -13,15 +13,20 @@ import Container from "@mui/material/Container";
 export default function LoginForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const userInput = new FormData(event.currentTarget);
     const submissionData = {
-      email: data.get("email"),
-      password: data.get("password"),
+      email: userInput.get("email"),
+      password: userInput.get("password"),
     };
+
     const res = await fetch("/api/login", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(submissionData),
     });
+
     const returnMessage = await res.json();
     console.log(returnMessage);
   };

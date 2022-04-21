@@ -1,9 +1,55 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import cookie from "cookie";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { connectToDatabase } from "../../utils/mongodb";
+
+export interface UserData {
+  email: string;
+  password: string;
+}
 
 export default async function loginHandler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req.body);
-  res.status(200).json({ message: "success" });
+  const { db } = await connectToDatabase();
+  console.log("Connected to server");
+
+  const collection = db.collection("users");
+
+  if (req.method === "POST") {
+    const userData: UserData = req.body;
+    const find = await collection.findOne({ email: userData.email });
+
+    if (find != null && bcrypt.compareSync(userData.password, find.password)) {
+      const token = jwt.sign(
+        {
+          email: userData.email,
+          time: Date.now(),
+        },
+        "hello",
+        {
+          expiresIn: "8h",
+        }
+      );
+
+      res.setHeader(
+        "Set-Cookie",
+        cookie.serialize("TRAX_ACCESS_TOKEN", token, {
+          httpOnly: true,
+          maxAge: 8 * 60 * 60,
+          path: "/",
+          sameSite: "lax",
+          secure: process.env.NODE_ENV === "production",
+        })
+      );
+
+      console.log({ message: "success" });
+      res.status(200).json({ message: "success" });
+    } else {
+      console.log({ error: "Email or Password is wrong" });
+      res.status(401).json({ error: "Email or Password is wrong" });
+    }
+  }
 }

@@ -27,8 +27,8 @@ export default function SignUp() {
       body: JSON.stringify(submissionData),
     });
 
-    // const returnMessage = await res.json();
-    // console.log(returnMessage);
+    const returnMessage = await res.json();
+    console.log(returnMessage);
   };
 
   const container = css`
