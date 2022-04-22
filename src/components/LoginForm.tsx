@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { css } from "linaria";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -9,9 +9,12 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { Alert } from "@mui/material";
 import { useRouter } from "next/router";
 
 export default function LoginForm() {
+  const [isError, setIsError] = useState(false);
+
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -34,8 +37,7 @@ export default function LoginForm() {
     if (returnMessage.message === "success") {
       router.push("/dashboard");
     } else {
-      console.log("nope");
-      // make a failure feature -- modal, etc
+      setIsError(true);
     }
   };
 
@@ -90,6 +92,9 @@ export default function LoginForm() {
           >
             Login
           </Button>
+          {isError ? (
+            <Alert severity="error">Email or Password is wrong</Alert>
+          ) : null}
           <Grid container>
             <Grid item xs>
               <Link href="/forgotPassword" variant="body2">

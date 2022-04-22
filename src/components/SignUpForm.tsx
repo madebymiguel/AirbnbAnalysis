@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { css } from "linaria";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -7,9 +7,12 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Alert from "@mui/material/Alert";
 import { useRouter } from "next/router";
 
 export default function SignUp() {
+  const [isError, setIsError] = useState(false);
+
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -35,8 +38,7 @@ export default function SignUp() {
     if (returnMessage.message === "success") {
       router.push("/dashboard");
     } else {
-      console.log("nope");
-      // make a failure feature -- modal, etc
+      setIsError(true);
     }
   };
 
@@ -116,6 +118,7 @@ export default function SignUp() {
           >
             Sign Up
           </Button>
+          {isError ? <Alert severity="error">User already exists</Alert> : null}
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/login" variant="body2">
