@@ -16,13 +16,17 @@ export default async function loginHandler(
   const { db } = await connectToDatabase();
   console.log("Connected to server");
 
-  const collection = db.collection("users");
+  const userCollection = db.collection("users");
 
   if (req.method === "POST") {
     const userData: UserData = req.body;
-    const find = await collection.findOne({ email: userData.email });
+    const findUser = await userCollection.findOne({ email: userData.email });
+    console.log("findUser", findUser);
 
-    if (find != null && bcrypt.compareSync(userData.password, find.password)) {
+    if (
+      findUser != null &&
+      bcrypt.compareSync(userData.password, findUser.password)
+    ) {
       const token = jwt.sign(
         {
           email: userData.email,
@@ -45,8 +49,15 @@ export default async function loginHandler(
         })
       );
 
-      console.log({ message: "success" });
-      res.status(200).json({ message: "success" });
+      const spreadSheetCollection = db.collection("spreadsheets");
+
+      const findUserSpreadSheets = await spreadSheetCollection.findOne({
+        email: userData.email,
+      });
+
+      console.log("findUserSpreadSheets", findUserSpreadSheets);
+
+      res.status(200).json(findUserSpreadSheets);
     } else {
       console.log({ error: "Email or Password is wrong" });
       res.status(401).json({ error: "Email or Password is wrong" });

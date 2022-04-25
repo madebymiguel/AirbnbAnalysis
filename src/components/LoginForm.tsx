@@ -34,10 +34,11 @@ export default function LoginForm() {
     });
 
     const returnMessage = await res.json();
-    if (returnMessage.message === "success") {
-      router.push("/dashboard");
-    } else {
+    console.log("returnMessage", returnMessage);
+    if (returnMessage.error) {
       setIsError(true);
+    } else {
+      router.push("/dashboard");
     }
   };
 

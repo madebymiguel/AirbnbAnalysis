@@ -18,15 +18,15 @@ export default async function signUpHandler(
   const { db } = await connectToDatabase();
   console.log("Connected to server");
 
-  const collection = db.collection("users");
+  const userCollection = db.collection("users");
 
   const salt = bcrypt.genSaltSync();
 
   if (req.method === "POST") {
     const userData: UserData = req.body;
-    const find = await collection.findOne({ email: userData.email });
+    const findUser = await userCollection.findOne({ email: userData.email });
 
-    if (find === null) {
+    if (findUser === null) {
       const hashPassword = bcrypt.hashSync(userData.password, salt);
       const user = {
         firstName: userData.firstName,
@@ -34,7 +34,8 @@ export default async function signUpHandler(
         email: userData.email,
         password: hashPassword,
       };
-      const result = await collection.insertOne(user);
+
+      const result = await userCollection.insertOne(user);
     } else {
       console.log({ error: "User already exists" });
       res.status(401).json({ error: "User already exists" });
@@ -60,6 +61,18 @@ export default async function signUpHandler(
         secure: process.env.NODE_ENV === "production",
       })
     );
+
+    const spreadSheetCollection = db.collection("spreadsheets");
+
+    const userSpreadSheetCollection = {
+      email: userData.email,
+      spreadSheets: [],
+    };
+
+    const spreadSheetResult = await spreadSheetCollection.insertOne(
+      userSpreadSheetCollection
+    );
+    console.log("spreadSheetResult", spreadSheetResult);
 
     console.log({ message: "success" });
     res.status(200).json({ message: "success" });
