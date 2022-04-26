@@ -72,9 +72,8 @@ export default async function signUpHandler(
     const spreadSheetResult = await spreadSheetCollection.insertOne(
       userSpreadSheetCollection
     );
-    console.log("spreadSheetResult", spreadSheetResult);
+    // console.log("spreadSheetResult", spreadSheetResult);
 
-    console.log({ message: "success" });
-    res.status(200).json({ message: "success" });
+    res.status(200).json(token);
   }
 }

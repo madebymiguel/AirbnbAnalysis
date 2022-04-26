@@ -34,9 +34,9 @@ export default function LoginForm() {
     });
 
     const returnMessage = await res.json();
-    console.log("returnMessage", returnMessage);
     if (returnMessage.error) {
       setIsError(true);
+      console.log("error");
     } else {
       router.push("/dashboard");
     }

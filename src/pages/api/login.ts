@@ -21,7 +21,7 @@ export default async function loginHandler(
   if (req.method === "POST") {
     const userData: UserData = req.body;
     const findUser = await userCollection.findOne({ email: userData.email });
-    console.log("findUser", findUser);
+    // console.log("findUser", findUser);
 
     if (
       findUser != null &&
@@ -49,15 +49,7 @@ export default async function loginHandler(
         })
       );
 
-      const spreadSheetCollection = db.collection("spreadsheets");
-
-      const findUserSpreadSheets = await spreadSheetCollection.findOne({
-        email: userData.email,
-      });
-
-      console.log("findUserSpreadSheets", findUserSpreadSheets);
-
-      res.status(200).json(findUserSpreadSheets);
+      res.status(200).json(JSON.stringify(token));
     } else {
       console.log({ error: "Email or Password is wrong" });
       res.status(401).json({ error: "Email or Password is wrong" });
