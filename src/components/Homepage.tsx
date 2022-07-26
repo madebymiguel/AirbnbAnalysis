@@ -23,11 +23,12 @@ export default function Homepage() {
     justify-content: space-around;
     align-items: center;
     align-content: center;
-    height: 75vh;
     background-color: white;
     width: 80vw;
-    margin-top: 5%;
+    height: 80%;
     box-shadow: 0px 10px 10px -10px #999;
+    overflow: hidden;
+    margin-top: 3%;
   `;
 
   const paragraphContainer = css`
@@ -36,10 +37,16 @@ export default function Homepage() {
     justify-content: center;
     text-align: center;
     align-items: center;
+    width: 700px;
+    padding: 20px;
   `;
 
   const imageContainer = css`
-    width: 62.5%;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
   `;
 
   const header = css`
@@ -85,7 +92,6 @@ export default function Homepage() {
           <Image
             src={airbnbPlaceHolder}
             alt="airbnbPlaceHolder"
-            layout="responsive"
             // width={950}
             // height={750}
           />
