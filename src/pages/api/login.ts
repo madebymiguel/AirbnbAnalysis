@@ -20,19 +20,18 @@ export default async function loginHandler(
 
   if (req.method === "POST") {
     const userData: UserData = req.body;
+
     const findUser = await userCollection.findOne({ email: userData.email });
     console.log("findUser", findUser);
 
-    if (
-      findUser != null &&
-      bcrypt.compareSync(userData.password, findUser.password)
-    ) {
+    if (findUser && bcrypt.compareSync(userData.password, findUser.password)) {
       const token = jwt.sign(
         {
+          userId: findUser.userId,
           email: userData.email,
           time: Date.now(),
         },
-        "hello",
+        "analysis",
         {
           expiresIn: "8h",
         }
@@ -40,7 +39,7 @@ export default async function loginHandler(
 
       res.setHeader(
         "Set-Cookie",
-        cookie.serialize("TRAX_ACCESS_TOKEN", token, {
+        cookie.serialize("ANALYSIS_ACCESS_TOKEN", token, {
           httpOnly: true,
           maxAge: 8 * 60 * 60,
           path: "/",
@@ -51,13 +50,13 @@ export default async function loginHandler(
 
       const spreadSheetCollection = db.collection("spreadsheets");
 
-      const findUserSpreadSheets = await spreadSheetCollection.findOne({
-        email: userData.email,
+      const userSpreadSheetCollection = await spreadSheetCollection.findOne({
+        userId: findUser.userId,
       });
 
-      console.log("findUserSpreadSheets", findUserSpreadSheets);
+      console.log("findUserSpreadSheets", userSpreadSheetCollection);
 
-      res.status(200).json(findUserSpreadSheets);
+      res.status(200).json(userSpreadSheetCollection);
     } else {
       console.log({ error: "Email or Password is wrong" });
       res.status(401).json({ error: "Email or Password is wrong" });

@@ -35,10 +35,10 @@ export default function SignUp() {
 
     const returnMessage = await res.json();
 
-    if (returnMessage.message === "success") {
-      router.push("/dashboard");
-    } else {
+    if (returnMessage.error === "error") {
       setIsError(true);
+    } else {
+      router.push("/dashboard");
     }
   };
 
