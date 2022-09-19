@@ -1,13 +1,11 @@
 import React from "react";
 import { css } from "linaria";
-import Button from "@mui/material/Button";
-import { Shared } from "../types/Shared";
+import { SpreadSheet } from "../types/SpreadSheet";
 import InputSection from "./InputSection";
 import OutputSection from "./OutputSection";
-import SaveModal from "./SaveModal";
 
 export interface SimpleSpreadSheetProps {
-  sharedData: Shared;
+  spreadSheetData: SpreadSheet;
   onUpdatePurchasePrice: (purchasePrice: number) => void;
   onUpdateDownPaymentPercentage: (downPaymentPercentage: number) => void;
   onUpdateClosingCostsPercentage: (closingCostsPercentage: number) => void;
@@ -24,15 +22,13 @@ export interface SimpleSpreadSheetProps {
   grossYield: number;
   cashFlow: string;
   cashOnCash: number;
-  isAdvanced: boolean;
-  onUpdateSpreadSheetView: (isAdvanced: boolean) => void;
   breakEvenAverageNightRate: string;
   breakEvenVacancyRate: number;
   averageNightRate: string;
 }
 
 export default function SimpleSpreadSheet({
-  sharedData,
+  spreadSheetData,
   onUpdatePurchasePrice,
   onUpdateDownPaymentPercentage,
   onUpdateClosingCostsPercentage,
@@ -49,8 +45,6 @@ export default function SimpleSpreadSheet({
   grossYield,
   cashFlow,
   cashOnCash,
-  isAdvanced,
-  onUpdateSpreadSheetView,
   breakEvenAverageNightRate,
   breakEvenVacancyRate,
   averageNightRate,
@@ -67,8 +61,8 @@ export default function SimpleSpreadSheet({
 
   const spreadSheetContainer = css`
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
+    flex-direction: column;
     padding-left: 2rem;
     padding-right: 2rem;
     @media (min-width: 851px) {
@@ -78,18 +72,12 @@ export default function SimpleSpreadSheet({
     }
   `;
 
-  const buttonContainer = css`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-  `;
-
   return (
     <div className={simpleSpreadSheetContainer}>
       <h1>Quick Rental Property Analysis</h1>
       <div className={spreadSheetContainer}>
         <InputSection
-          sharedData={sharedData}
+          spreadSheetData={spreadSheetData}
           onUpdatePurchasePrice={onUpdatePurchasePrice}
           onUpdateDownPaymentPercentage={onUpdateDownPaymentPercentage}
           onUpdateClosingCostsPercentage={onUpdateClosingCostsPercentage}
@@ -109,18 +97,10 @@ export default function SimpleSpreadSheet({
           cashFlow={cashFlow}
           cashOnCash={Math.round(cashOnCash * 100) / 100}
           averageNightRate={averageNightRate}
-          vacancyRate={sharedData.vacancyRatePercentage}
+          vacancyRate={spreadSheetData.vacancyRatePercentage}
           breakEvenAverageNightRate={breakEvenAverageNightRate}
           breakEvenVacancyRate={breakEvenVacancyRate}
         />
-      </div>
-      <div>
-        <div className={buttonContainer}>
-          <SaveModal />
-          <Button onClick={() => onUpdateSpreadSheetView(isAdvanced)}>
-            Advanced Analysis
-          </Button>
-        </div>
       </div>
     </div>
   );

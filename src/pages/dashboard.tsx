@@ -1,7 +1,7 @@
 import React from "react";
 import { css } from "linaria";
 import SavedSection from "../components/SavedSection";
-import SpreadSheet from "../components/SpreadSheet";
+import SpreadSheets from "../components/SpreadSheets";
 import Header from "../components/Header";
 
 const pageLayout = css`
@@ -10,14 +10,10 @@ const pageLayout = css`
   grid-template-areas:
     "header header header header"
     ". saved spreadsheet .";
-  height: 100vh;
 `;
 
 const header = css`
   grid-area: header;
-  width: 100%;
-`;
-const main = css`
   width: 100%;
 `;
 
@@ -43,7 +39,7 @@ export default function Dashboard() {
         <SavedSection />
       </div>
       <div className={spreadsheet}>
-        <SpreadSheet />
+        <SpreadSheets />
       </div>
     </div>
   );

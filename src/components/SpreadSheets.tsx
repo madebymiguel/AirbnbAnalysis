@@ -1,10 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import AdvancedSpreadSheet from "./AdvancedSpreadSheet";
 import SimpleSpreadSheet from "./SimpleSpreadSheet";
-import { Exit } from "../types/Exit";
-import { MonthlyRevenueAndExpenses } from "../types/MonthlyRevenueAndExpenses";
-import { Shared } from "../types/Shared";
-import { StartupCost } from "../types/StartupCost";
 import moneyFormatter from "../utils/moneyFormatter";
 import {
   calculateAmountPercentage,
@@ -30,53 +26,45 @@ import {
   calculateTotalStartupCost,
   calculateYearlyMarketValue,
 } from "../utils/Calculation";
+import { Button } from "@mui/material";
+import SaveModal from "./SaveModal";
+import { css } from "linaria";
+import { SpreadSheet } from "../types/SpreadSheet";
 
-export default function SpreadSheet() {
+export default function SpreadSheets() {
   const formatter = useMemo(() => moneyFormatter(), []);
 
   const [isAdvanced, setIsAdvanced] = useState(false);
 
-  const [sharedData, setSharedData] = useState<Shared>({
+  const [spreadSheetData, setSpreadSheetData] = useState<SpreadSheet>({
     purchasePrice: 0,
     downPaymentPercentage: 0,
     closingCostsPercentage: 0,
     startupCosts: 0,
-    // monthlyRevenue: output
     averageNightlyRate: 0,
     vacancyRatePercentage: 0,
-    // end monthlyRevenue: output
     monthlyExpenses: 0,
-    // start monthlyMortgagePayment: output
     interestRatePercentage: 0,
     mortgageLoanTerm: 0,
-    // end monthlyMortgagePayment:
-  });
-
-  const [startupCostData, setStartupCostData] = useState<StartupCost>({
     holdingCosts: 0,
     renovationCost: 0,
-  });
-
-  const [monthlyRevenueAndExpensesData, setMonthlyRevenueAndExpensesData] =
-    useState<MonthlyRevenueAndExpenses>({
-      hoa: 0,
-      propertyTaxes: 0,
-      fireInsurance: 0,
-      floodInsurance: 0,
-      pmi: 0,
-      repairsReservePerMonthAmount: 0,
-      capitalExpenditure: 0,
-      waterSewer: 0,
-      garbage: 0,
-      gas: 0,
-      electricty: 0,
-      snowRemoval: 0,
-      lawnCare: 0,
-      propertyManagementPercentage: 0,
-      other: 0,
-    });
-
-  const [exitData, setExitData] = useState<Exit>({
+    monthlyRevenue: 0,
+    monthlyOperatingExpenses: 0,
+    hoa: 0,
+    propertyTaxes: 0,
+    fireInsurance: 0,
+    floodInsurance: 0,
+    pmi: 0,
+    repairsReservePerMonthAmount: 0,
+    capitalExpenditure: 0,
+    waterSewer: 0,
+    garbage: 0,
+    gas: 0,
+    electricty: 0,
+    snowRemoval: 0,
+    lawnCare: 0,
+    propertyManagementPercentage: 0,
+    other: 0,
     averageAppreciationPercentage: 0,
     salesCostPercentage: 0,
     remainingMortagageBalance: 0,
@@ -91,107 +79,107 @@ export default function SpreadSheet() {
 
   const handleUpdatePurchasePrice = useCallback(
     (purchasePrice: number) => {
-      setSharedData({
-        ...sharedData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         purchasePrice,
       });
     },
-    [sharedData]
+    [spreadSheetData]
   );
 
   const handleUpdateDownPaymentPercentage = useCallback(
     (downPaymentPercentage: number) => {
-      setSharedData({
-        ...sharedData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         downPaymentPercentage,
       });
     },
-    [sharedData]
+    [spreadSheetData]
   );
 
   const handleUpdateClosingCostsPercentage = useCallback(
     (closingCostsPercentage: number) => {
-      setSharedData({
-        ...sharedData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         closingCostsPercentage,
       });
     },
-    [sharedData]
+    [spreadSheetData]
   );
 
   const handleUpdateStartupCosts = useCallback(
     (startupCosts: number) => {
-      setSharedData({
-        ...sharedData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         startupCosts,
       });
     },
-    [sharedData]
+    [spreadSheetData]
   );
 
   const handleUpdateAverageNightlyRate = useCallback(
     (averageNightlyRate: number) => {
-      setSharedData({
-        ...sharedData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         averageNightlyRate,
       });
     },
-    [sharedData]
+    [spreadSheetData]
   );
 
   const handleUpdateVacancyRatePercentage = useCallback(
     (vacancyRatePercentage: number) => {
-      setSharedData({
-        ...sharedData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         vacancyRatePercentage,
       });
     },
-    [sharedData]
+    [spreadSheetData]
   );
 
   const handleUpdateMonthlyExpenses = useCallback(
     (monthlyExpenses: number) => {
-      setSharedData({
-        ...sharedData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         monthlyExpenses,
       });
     },
-    [sharedData]
+    [spreadSheetData]
   );
 
   const handleUpdateInterestRatePercentage = useCallback(
     (interestRatePercentage: number) => {
-      setSharedData({
-        ...sharedData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         interestRatePercentage,
       });
     },
-    [sharedData]
+    [spreadSheetData]
   );
 
   const handleUpdateMortgageLoanTerm = useCallback(
     (mortgageLoanTerm: number) => {
-      setSharedData({
-        ...sharedData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         mortgageLoanTerm,
       });
     },
-    [sharedData]
+    [spreadSheetData]
   );
 
   // End of sharedData handlers
 
   const numberOfPayments = calculateAnnualFromMonthly(
-    sharedData.mortgageLoanTerm
+    spreadSheetData.mortgageLoanTerm
   );
 
   const mortgageInitialPrincipal = calculateAmountPercentage(
-    sharedData.purchasePrice,
-    100 - sharedData.downPaymentPercentage
+    spreadSheetData.purchasePrice,
+    100 - spreadSheetData.downPaymentPercentage
   );
 
   const monthlyInterestRate = calculateMonthlyInterestRate(
-    sharedData.interestRatePercentage
+    spreadSheetData.interestRatePercentage
   );
 
   const monthlyMortgage = calculateMonthyLoanPayment(
@@ -201,227 +189,227 @@ export default function SpreadSheet() {
   );
 
   const monthlyRevenue = calculateMonthlyRevenue(
-    sharedData.averageNightlyRate,
-    sharedData.vacancyRatePercentage
+    spreadSheetData.averageNightlyRate,
+    spreadSheetData.vacancyRatePercentage
   );
 
   // Start of startupCostData handlers
 
   const handleUpdateHoldingCosts = useCallback(
     (holdingCosts: number) => {
-      setStartupCostData({
-        ...startupCostData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         holdingCosts,
       });
     },
-    [startupCostData]
+    [spreadSheetData]
   );
 
   const handleUpdateRenovationCost = useCallback(
     (renovationCost: number) => {
-      setStartupCostData({
-        ...startupCostData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         renovationCost,
       });
     },
-    [startupCostData]
+    [spreadSheetData]
   );
 
   // End of startupCostData handlers
 
   const downPaymentAmount = calculateAmountPercentage(
-    sharedData.purchasePrice,
-    sharedData.downPaymentPercentage
+    spreadSheetData.purchasePrice,
+    spreadSheetData.downPaymentPercentage
   );
 
   const initialInvestment = calculateTotalStartupCost(
-    sharedData.purchasePrice,
+    spreadSheetData.purchasePrice,
     downPaymentAmount,
-    sharedData.closingCostsPercentage,
-    startupCostData.holdingCosts,
-    sharedData.startupCosts,
-    startupCostData.renovationCost
+    spreadSheetData.closingCostsPercentage,
+    spreadSheetData.holdingCosts,
+    spreadSheetData.startupCosts,
+    spreadSheetData.renovationCost
   );
 
   /** Monthly Revenue And Expenses Section */
 
   const handleUpdateHOA = useCallback(
     (hoa: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         hoa,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdatePropertyTaxes = useCallback(
     (propertyTaxes: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         propertyTaxes,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateFireInsurance = useCallback(
     (fireInsurance: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         fireInsurance,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateFloodInsurance = useCallback(
     (floodInsurance: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         floodInsurance,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdatePMI = useCallback(
     (pmi: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         pmi,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateRepairsReservePerMonthAmount = useCallback(
     (repairsReservePerMonthAmount: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         repairsReservePerMonthAmount,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateCapitalExpenditure = useCallback(
     (capitalExpenditure: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         capitalExpenditure,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateWaterSewer = useCallback(
     (waterSewer: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         waterSewer,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateGarbage = useCallback(
     (garbage: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         garbage,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateGas = useCallback(
     (gas: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         gas,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateElectricty = useCallback(
     (electricty: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         electricty,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateSnowRemoval = useCallback(
     (snowRemoval: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         snowRemoval,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateLawnCare = useCallback(
     (lawnCare: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         lawnCare,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdatePropertyManagementPercentage = useCallback(
     (propertyManagementPercentage: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         propertyManagementPercentage,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const handleUpdateOther = useCallback(
     (other: number) => {
-      setMonthlyRevenueAndExpensesData({
-        ...monthlyRevenueAndExpensesData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         other,
       });
     },
-    [monthlyRevenueAndExpensesData]
+    [spreadSheetData]
   );
 
   const grossMonthlyRent = calculateGrossMonthlyRent(
-    sharedData.averageNightlyRate,
-    sharedData.vacancyRatePercentage
+    spreadSheetData.averageNightlyRate,
+    spreadSheetData.vacancyRatePercentage
   );
 
   const propertyManagementAmount = calculateAmountPercentage(
     grossMonthlyRent,
-    monthlyRevenueAndExpensesData.propertyManagementPercentage
+    spreadSheetData.propertyManagementPercentage
   );
 
   const monthlyExpenses = calculateMonthlyExpenses(
     monthlyMortgage,
-    monthlyRevenueAndExpensesData.hoa,
-    monthlyRevenueAndExpensesData.propertyTaxes,
-    monthlyRevenueAndExpensesData.fireInsurance,
-    monthlyRevenueAndExpensesData.floodInsurance,
-    monthlyRevenueAndExpensesData.pmi,
-    monthlyRevenueAndExpensesData.repairsReservePerMonthAmount,
-    monthlyRevenueAndExpensesData.capitalExpenditure,
-    monthlyRevenueAndExpensesData.waterSewer,
-    monthlyRevenueAndExpensesData.garbage,
-    monthlyRevenueAndExpensesData.gas,
-    monthlyRevenueAndExpensesData.electricty,
-    monthlyRevenueAndExpensesData.snowRemoval,
-    monthlyRevenueAndExpensesData.lawnCare,
+    spreadSheetData.hoa,
+    spreadSheetData.propertyTaxes,
+    spreadSheetData.fireInsurance,
+    spreadSheetData.floodInsurance,
+    spreadSheetData.pmi,
+    spreadSheetData.repairsReservePerMonthAmount,
+    spreadSheetData.capitalExpenditure,
+    spreadSheetData.waterSewer,
+    spreadSheetData.garbage,
+    spreadSheetData.gas,
+    spreadSheetData.electricty,
+    spreadSheetData.snowRemoval,
+    spreadSheetData.lawnCare,
     propertyManagementAmount,
-    monthlyRevenueAndExpensesData.other
+    spreadSheetData.other
   );
 
   const monthlyCashflow = calculateMonthlyCashflow(
@@ -432,16 +420,16 @@ export default function SpreadSheet() {
   /** Financial Analysis Section  */
 
   const closingCostAmount = calculateAmountPercentage(
-    sharedData.purchasePrice,
-    sharedData.closingCostsPercentage
+    spreadSheetData.purchasePrice,
+    spreadSheetData.closingCostsPercentage
   );
 
   const totalCashRequired = calculateTotalCashRequired(
     downPaymentAmount,
     closingCostAmount,
-    sharedData.startupCosts,
-    startupCostData.holdingCosts,
-    startupCostData.renovationCost
+    spreadSheetData.startupCosts,
+    spreadSheetData.holdingCosts,
+    spreadSheetData.renovationCost
   );
 
   const netAnnualCashflow = calculateAnnualFromMonthly(monthlyCashflow);
@@ -452,12 +440,12 @@ export default function SpreadSheet() {
   );
 
   const breakEvenAverageNightRate = calculateBreakEvenNightRate(
-    sharedData.vacancyRatePercentage,
+    spreadSheetData.vacancyRatePercentage,
     monthlyExpenses
   );
 
   const breakEvenVacancyRate = calculateBreakEvenVacancyRate(
-    sharedData.averageNightlyRate,
+    spreadSheetData.averageNightlyRate,
     monthlyExpenses
   );
 
@@ -465,53 +453,53 @@ export default function SpreadSheet() {
 
   const handleUpdateYearlyAverageAppreciationPercentage = useCallback(
     (averageAppreciationPercentage: number) => {
-      setExitData({
-        ...exitData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         averageAppreciationPercentage,
       });
     },
-    [exitData]
+    [spreadSheetData]
   );
 
   const handleUpdateSalesCostPercentage = useCallback(
     (salesCostPercentage: number) => {
-      setExitData({
-        ...exitData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         salesCostPercentage,
       });
     },
-    [exitData]
+    [spreadSheetData]
   );
 
   const handleUpdateremainingMortagageBalance = useCallback(
     (remainingMortagageBalance: number) => {
-      setExitData({
-        ...exitData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         remainingMortagageBalance,
       });
     },
-    [exitData]
+    [spreadSheetData]
   );
 
   const handleUpdateYearsHeldonInvestment = useCallback(
     (yearsHeldonInvestment: number) => {
-      setExitData({
-        ...exitData,
+      setSpreadSheetData({
+        ...spreadSheetData,
         yearsHeldonInvestment,
       });
     },
-    [exitData]
+    [spreadSheetData]
   );
 
   // End if exitData handlers
   const finalSalesPrice = calculateYearlyMarketValue(
-    sharedData.purchasePrice,
-    exitData.averageAppreciationPercentage,
-    exitData.yearsHeldonInvestment
+    spreadSheetData.purchasePrice,
+    spreadSheetData.averageAppreciationPercentage,
+    spreadSheetData.yearsHeldonInvestment
   );
 
   const salesCostAmount = calculateAmountPercentage(
-    exitData.salesCostPercentage,
+    spreadSheetData.salesCostPercentage,
     finalSalesPrice
   );
 
@@ -519,11 +507,11 @@ export default function SpreadSheet() {
 
   const homeSaleProfit = calculateHomeSaleProfit(
     finalSalesPrice,
-    exitData.remainingMortagageBalance
+    spreadSheetData.remainingMortagageBalance
   );
 
   const totalCashFlow = calculateTotalCashFlow(
-    exitData.yearsHeldonInvestment,
+    spreadSheetData.yearsHeldonInvestment,
     netAnnualCashflow
   );
 
@@ -535,18 +523,21 @@ export default function SpreadSheet() {
 
   const simpleAnnualNOI = calculateAnnualNOI(
     grossMonthlyRent * 12,
-    sharedData.monthlyExpenses * 12
+    spreadSheetData.monthlyExpenses * 12
   );
-  const capRate = calculateRatio(simpleAnnualNOI, sharedData.purchasePrice);
+  const capRate = calculateRatio(
+    simpleAnnualNOI,
+    spreadSheetData.purchasePrice
+  );
 
   const grossYield = calculateRatio(
     grossMonthlyRent * 12,
-    sharedData.purchasePrice
+    spreadSheetData.purchasePrice
   );
 
   const simpleCashFlow = calculateSimpleCashflow(
     monthlyRevenue,
-    sharedData.monthlyExpenses,
+    spreadSheetData.monthlyExpenses,
     monthlyMortgage
   );
 
@@ -556,19 +547,21 @@ export default function SpreadSheet() {
   );
 
   const simpleBreakEvenAverageNightRate = calculateSimpleBreakEvenNightRate(
-    sharedData.vacancyRatePercentage,
+    spreadSheetData.vacancyRatePercentage,
     monthlyMortgage,
-    sharedData.monthlyExpenses
+    spreadSheetData.monthlyExpenses
   );
 
   const simpleBreakEvenVacancyRate = calculateSimpleBreakEvenVacancyRate(
-    sharedData.averageNightlyRate,
+    spreadSheetData.averageNightlyRate,
     monthlyMortgage,
-    sharedData.monthlyExpenses
+    spreadSheetData.monthlyExpenses
   );
 
   // mortgage section
-  const exitMonths = calculateAnnualFromMonthly(exitData.yearsHeldonInvestment);
+  const exitMonths = calculateAnnualFromMonthly(
+    spreadSheetData.yearsHeldonInvestment
+  );
 
   const remainingPrincipal = calculateRemainingPrincipal(
     monthlyMortgage,
@@ -576,32 +569,42 @@ export default function SpreadSheet() {
     numberOfPayments - exitMonths
   );
 
+  const spreadSheetContainer = css`
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    width: 100%;
+  `;
+
+  const buttonContainer = css`
+    display: flex;
+    justify-content: space-between;
+    max-width: 60rem;
+    margin: auto;
+    padding: 16px;
+  `;
+
   return (
-    <div>
+    <div className={spreadSheetContainer}>
       {isAdvanced ? (
         <AdvancedSpreadSheet
           // Data State
-          sharedData={sharedData}
-          startupCostData={startupCostData}
-          monthlyRevenueAndExpensesData={monthlyRevenueAndExpensesData}
-          exitData={exitData}
-          // Startup Costs
+          spreadSheetData={spreadSheetData}
+          formatter={formatter}
+          // Startup Costs Section
           onUpdatePurchasePrice={handleUpdatePurchasePrice}
           onUpdateDownPaymentPercentage={handleUpdateDownPaymentPercentage}
           downPaymentAmount={formatter.format(downPaymentAmount)}
-          downPaymentPercentage={
-            Math.round(sharedData.downPaymentPercentage * 100) / 100
-          }
           onUpdateClosingCostsPercentage={handleUpdateClosingCostsPercentage}
           onUpdateHoldingCosts={handleUpdateHoldingCosts}
           onUpdateStartupCosts={handleUpdateStartupCosts}
           onUpdateRenovationCost={handleUpdateRenovationCost}
           initialInvestment={formatter.format(initialInvestment)}
-          // Monthly Revenue
+          // Monthly Revenue Section
           onUpdateAverageNightlyRate={handleUpdateAverageNightlyRate}
-          monthlyMortgage={formatter.format(monthlyMortgage)}
           onUpdateVacancyRatePercentage={handleUpdateVacancyRatePercentage}
           grossMonthlyRent={formatter.format(grossMonthlyRent)}
+          monthlyMortgage={formatter.format(monthlyMortgage)}
           onUpdateHOA={handleUpdateHOA}
           onUpdatePropertyTaxes={handleUpdatePropertyTaxes}
           onUpdateFireInsurance={handleUpdateFireInsurance}
@@ -624,27 +627,28 @@ export default function SpreadSheet() {
           onUpdateOther={handleUpdateOther}
           monthlyExpenses={formatter.format(monthlyExpenses)}
           monthlyCashflow={formatter.format(monthlyCashflow)}
-          // Financial Analysis
-
+          // Moragage Section
+          onUpdateMortgageLoanTerm={handleUpdateMortgageLoanTerm}
+          onUpdateInterestRate={handleUpdateInterestRatePercentage}
+          initialPrincipal={formatter.format(mortgageInitialPrincipal)}
+          monthlyPayments={formatter.format(monthlyMortgage)}
+          // Financial Analysis Section
           //Total Startup Costs
-          purchasePrice={formatter.format(sharedData.purchasePrice)}
-          // downPaymentAmount is define in startup section
           closingCostAmount={formatter.format(closingCostAmount)}
-          startupCosts={formatter.format(sharedData.startupCosts)}
-          holdingCosts={formatter.format(startupCostData.holdingCosts)}
-          renovationCost={formatter.format(startupCostData.renovationCost)}
           totalCashRequired={formatter.format(totalCashRequired)}
           //Short Term Rental
           totalMonthlyRevenue={formatter.format(grossMonthlyRent)}
-          // monthlyExpenses is defined in Monthly Revenue Section
           netMonthlyCashFlow={formatter.format(monthlyCashflow)}
           netAnnualCashflow={formatter.format(netAnnualCashflow)}
           COCReturnPercentage={Math.round(COCReturnPercentage * 100) / 100}
+          breakEvenAverageNightRate={formatter.format(
+            breakEvenAverageNightRate
+          )}
+          breakEvenVacancyRate={Math.round(breakEvenVacancyRate * 100) / 100}
           // Exit
           onUpdateYearlyAverageAppreciationPercentage={
             handleUpdateYearlyAverageAppreciationPercentage
           }
-          initialMarketValue={formatter.format(sharedData.purchasePrice)}
           finalSalesPrice={formatter.format(finalSalesPrice)}
           onUpdateSalesCostPercentage={handleUpdateSalesCostPercentage}
           salesCostAmount={formatter.format(salesCostAmount)}
@@ -652,31 +656,21 @@ export default function SpreadSheet() {
             handleUpdateremainingMortagageBalance
           }
           totalInvestment={formatter.format(totalInvestment)}
-          onUpdateYearsHeldonInvestment={handleUpdateYearsHeldonInvestment}
           homeSaleProfit={formatter.format(homeSaleProfit)}
           cashFlow={formatter.format(totalCashFlow)}
           totalProfit={formatter.format(totalProfit)}
           totalROI={Math.round(totalROI * 100) / 100}
-          // Layout
-          isAdvanced={isAdvanced}
-          onUpdateSpreadSheetView={handleSpreadSheetView}
-          // Moragage
-          onUpdateMortgageLoanTerm={handleUpdateMortgageLoanTerm}
-          onUpdateInterestRate={handleUpdateInterestRatePercentage}
-          initialPrincipal={formatter.format(mortgageInitialPrincipal)}
-          monthlyPayments={formatter.format(monthlyMortgage)}
           remainingPrincipal={formatter.format(remainingPrincipal)}
-          //Extra
-          breakEvenAverageNightRate={formatter.format(
-            breakEvenAverageNightRate
+          onUpdateYearsHeldonInvestment={handleUpdateYearsHeldonInvestment}
+          initialMarketValue={""}
+          averageNightRate={formatter.format(
+            spreadSheetData.averageNightlyRate
           )}
-          breakEvenVacancyRate={Math.round(breakEvenVacancyRate * 100) / 100}
-          averageNightRate={formatter.format(sharedData.averageNightlyRate)}
         />
       ) : (
         <SimpleSpreadSheet
           // Data State
-          sharedData={sharedData}
+          spreadSheetData={spreadSheetData}
           // Input
           onUpdatePurchasePrice={handleUpdatePurchasePrice}
           onUpdateDownPaymentPercentage={handleUpdateDownPaymentPercentage}
@@ -695,17 +689,25 @@ export default function SpreadSheet() {
           grossYield={Math.round(grossYield * 100) / 100}
           cashFlow={formatter.format(simpleCashFlow)}
           cashOnCash={Math.round(simpleCOCReturnPercentage * 100) / 100}
-          isAdvanced={isAdvanced}
-          onUpdateSpreadSheetView={handleSpreadSheetView}
           breakEvenAverageNightRate={formatter.format(
             simpleBreakEvenAverageNightRate
           )}
           breakEvenVacancyRate={
             Math.round(simpleBreakEvenVacancyRate * 100) / 100
           }
-          averageNightRate={formatter.format(sharedData.averageNightlyRate)}
+          averageNightRate={formatter.format(
+            spreadSheetData.averageNightlyRate
+          )}
         />
       )}
+      <div>
+        <div className={buttonContainer}>
+          <SaveModal spreadSheetData={spreadSheetData} />
+          <Button onClick={() => handleSpreadSheetView(isAdvanced)}>
+            Advanced Analysis
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

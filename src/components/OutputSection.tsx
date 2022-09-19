@@ -86,16 +86,20 @@ export default function OutputSection({
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell component="th" scope="row">
+            <TableCell component="th" scope="row" className={tableCells}>
               Break Even Nightly Rate at vacancy rate of {vacancyRate}%
             </TableCell>
-            <TableCell align="right">{breakEvenAverageNightRate}</TableCell>
+            <TableCell align="right" className={tableCells}>
+              {breakEvenAverageNightRate}
+            </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell component="th" scope="row">
+            <TableCell component="th" scope="row" className={tableCells}>
               Break Even Vacancy Rate at night rate of {averageNightRate}
             </TableCell>
-            <TableCell align="right">{breakEvenVacancyRate}%</TableCell>
+            <TableCell align="right" className={tableCells}>
+              {breakEvenVacancyRate}%
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>

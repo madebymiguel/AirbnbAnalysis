@@ -8,10 +8,10 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import { InputAdornment } from "@mui/material";
-import { Shared } from "../types/Shared";
+import { SpreadSheet } from "../types/SpreadSheet";
 
 export interface InputSectionProps {
-  sharedData: Shared;
+  spreadSheetData: SpreadSheet;
   onUpdatePurchasePrice: (purchasePrice: number) => void;
   onUpdateDownPaymentPercentage: (downPaymentPercentage: number) => void;
   onUpdateClosingCostsPercentage: (closingCostsPercentage: number) => void;
@@ -26,7 +26,7 @@ export interface InputSectionProps {
 }
 
 export default function InputSection({
-  sharedData,
+  spreadSheetData,
   onUpdatePurchasePrice,
   onUpdateDownPaymentPercentage,
   onUpdateClosingCostsPercentage,
@@ -68,7 +68,7 @@ export default function InputSection({
                 id="standard-basic"
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 type="number"
-                defaultValue={sharedData.purchasePrice}
+                defaultValue={spreadSheetData.purchasePrice}
                 onChange={(e) => onUpdatePurchasePrice(+e.target.value)}
                 startAdornment={
                   <InputAdornment position="start">$</InputAdornment>
@@ -86,7 +86,7 @@ export default function InputSection({
                 id="standard-basic"
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 type="number"
-                defaultValue={sharedData.downPaymentPercentage}
+                defaultValue={spreadSheetData.downPaymentPercentage}
                 onChange={(e) => onUpdateDownPaymentPercentage(+e.target.value)}
                 startAdornment={
                   <InputAdornment position="start">%</InputAdornment>
@@ -104,7 +104,7 @@ export default function InputSection({
                 id="standard-basic"
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 type="number"
-                defaultValue={sharedData.closingCostsPercentage}
+                defaultValue={spreadSheetData.closingCostsPercentage}
                 onChange={(e) =>
                   onUpdateClosingCostsPercentage(+e.target.value)
                 }
@@ -124,7 +124,7 @@ export default function InputSection({
                 id="standard-basic"
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 type="number"
-                defaultValue={sharedData.startupCosts}
+                defaultValue={spreadSheetData.startupCosts}
                 onChange={(e) => onUpdateStartupCosts(+e.target.value)}
                 startAdornment={
                   <InputAdornment position="start">$</InputAdornment>
@@ -150,7 +150,7 @@ export default function InputSection({
                 id="standard-basic"
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 type="number"
-                defaultValue={sharedData.averageNightlyRate}
+                defaultValue={spreadSheetData.averageNightlyRate}
                 onChange={(e) => onUpdateAverageNightlyRate(+e.target.value)}
                 startAdornment={
                   <InputAdornment position="start">$</InputAdornment>
@@ -168,7 +168,7 @@ export default function InputSection({
                 id="standard-basic"
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 type="number"
-                defaultValue={sharedData.vacancyRatePercentage}
+                defaultValue={spreadSheetData.vacancyRatePercentage}
                 onChange={(e) => onUpdateVacancyRatePercentage(+e.target.value)}
                 startAdornment={
                   <InputAdornment position="start">%</InputAdornment>
@@ -186,7 +186,7 @@ export default function InputSection({
                 id="standard-basic"
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 type="number"
-                defaultValue={sharedData.monthlyExpenses}
+                defaultValue={spreadSheetData.monthlyExpenses}
                 onChange={(e) => onUpdateMonthlyExpenses(+e.target.value)}
                 startAdornment={
                   <InputAdornment position="start">$</InputAdornment>
@@ -212,7 +212,7 @@ export default function InputSection({
                 id="standard-basic"
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 type="number"
-                defaultValue={sharedData.interestRatePercentage}
+                defaultValue={spreadSheetData.interestRatePercentage}
                 onChange={(e) =>
                   onUpdateInterestRatePercentage(+e.target.value)
                 }
@@ -232,7 +232,7 @@ export default function InputSection({
                 id="standard-basic"
                 inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 type="number"
-                defaultValue={sharedData.mortgageLoanTerm}
+                defaultValue={spreadSheetData.mortgageLoanTerm}
                 onChange={(e) => onUpdateMortgageLoanTerm(+e.target.value)}
                 startAdornment={
                   <InputAdornment position="start">Yrs</InputAdornment>

@@ -6,6 +6,8 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import { useRouter } from "next/router";
+import { SpreadSheet } from "../types/SpreadSheet";
 
 const modalContainer = css`
   position: absolute;
@@ -16,7 +18,7 @@ const modalContainer = css`
   justify-content: center;
   transform: translate(-50%, -50%);
   width: 400px;
-  height: 200px;
+  height: 400px;
   background-color: white;
   padding: 20px;
   border-radius: 8px;
@@ -35,10 +37,45 @@ const buttonContainer = css`
   padding: 4px;
 `;
 
-export default function SaveModal() {
+export interface SaveModalProps {
+  spreadSheetData: SpreadSheet;
+}
+
+export default function SaveModal({ spreadSheetData }: SaveModalProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const userInput = new FormData(event.currentTarget);
+    const submissionData = {
+      name: userInput.get("name"),
+      address: userInput.get("address"),
+      city: userInput.get("city"),
+      state: userInput.get("state"),
+      zipcode: userInput.get("zipcode"),
+      spreadSheetData,
+    };
+
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(submissionData),
+    });
+
+    const returnMessage = await res.json();
+
+    if (returnMessage.error) {
+      router.push("/login");
+    } else {
+      router.push("/dashboard");
+    }
+  };
 
   return (
     <div>
@@ -57,11 +94,32 @@ export default function SaveModal() {
         }}
       >
         <Fade in={open}>
-          <Box className={modalContainer}>
-            <TextField className={input} label="Name"></TextField>
-            <TextField className={input} label="Address"></TextField>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            className={modalContainer}
+          >
+            <TextField
+              className={input}
+              id="name"
+              label="Save Name"
+            ></TextField>
+            <TextField
+              className={input}
+              id="address"
+              label="Address"
+            ></TextField>
+            <TextField className={input} id="city" label="City"></TextField>
+            <TextField className={input} id="state" label="State"></TextField>
+            <TextField
+              className={input}
+              id="zipcode"
+              label="Zipcode"
+            ></TextField>
             <div className={buttonContainer}>
-              <Button variant="text">Save</Button>
+              <Button type="submit" variant="text">
+                Save
+              </Button>
               <Button onClick={handleClose} variant="contained">
                 Cancel
               </Button>

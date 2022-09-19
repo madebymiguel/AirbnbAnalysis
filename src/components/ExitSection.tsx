@@ -13,10 +13,10 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Exit } from "../types/Exit";
+import { SpreadSheet } from "../types/SpreadSheet";
 // change handler for appreciation
 export interface ExitSectionProps {
-  exitData: Exit;
+  spreadSheetData: SpreadSheet;
   onUpdateYearlyAverageAppreciationPercentage: (
     year1AppreciationPercentage: number
   ) => void;
@@ -38,7 +38,7 @@ export interface ExitSectionProps {
 }
 
 export default function ExitSection({
-  exitData,
+  spreadSheetData,
   onUpdateYearlyAverageAppreciationPercentage,
   initialMarketValue,
   finalSalesPrice,
@@ -67,35 +67,34 @@ export default function ExitSection({
           <Table>
             <TableBody>
               <TableRow>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right">
-                  Average Appreciation Percentage
+                <TableCell component="th" scope="row">
+                  Exit Year
                 </TableCell>
-                <TableCell align="right">Market Value</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="right">Exit Year</TableCell>
-                <TableCell align="right"></TableCell>
                 <TableCell align="right">
                   <Input
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={exitData.yearsHeldonInvestment}
+                    defaultValue={spreadSheetData.yearsHeldonInvestment}
                     onChange={(e) =>
                       onUpdateYearsHeldonInvestment(+e.target.value)
+                    }
+                    startAdornment={
+                      <InputAdornment position="start">Yrs</InputAdornment>
                     }
                   />
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align="right">First Year</TableCell>
+                <TableCell component="th" scope="row">
+                  Average Appreciation Percentage
+                </TableCell>
                 <TableCell align="right">
                   <Input
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={exitData.averageAppreciationPercentage}
+                    defaultValue={spreadSheetData.averageAppreciationPercentage}
                     onChange={(e) =>
                       onUpdateYearlyAverageAppreciationPercentage(
                         +e.target.value
@@ -106,22 +105,26 @@ export default function ExitSection({
                     }
                   />
                 </TableCell>
-                <TableCell align="right">{initialMarketValue}</TableCell>
+                <TableCell component="th" scope="row">
+                  {initialMarketValue}
+                </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align="right">Final Sales Price</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell component="th" scope="row">
+                  Final Sales Price
+                </TableCell>
                 <TableCell align="right">{finalSalesPrice}</TableCell>
               </TableRow>
-
               <TableRow>
-                <TableCell align="right">Sales Cost Percentage</TableCell>
+                <TableCell component="th" scope="row">
+                  Sales Cost Percentage
+                </TableCell>
                 <TableCell align="right">
                   <Input
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={exitData.salesCostPercentage}
+                    defaultValue={spreadSheetData.salesCostPercentage}
                     onChange={(e) =>
                       onUpdateSalesCostPercentage(+e.target.value)
                     }
@@ -130,36 +133,48 @@ export default function ExitSection({
                     }
                   />
                 </TableCell>
-                <TableCell align="right">{salesCostAmount}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align="right">Remaining Mortgage Balance</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell component="th" scope="row">
+                  Sales Cost Amount
+                </TableCell>
+                <TableCell align="right">{salesCostAmount}</TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Remaining Mortgage Balance
+                </TableCell>
                 <TableCell align="right">{remainingBalance}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align="right">Total Investment</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell component="th" scope="row">
+                  Total Investment
+                </TableCell>
                 <TableCell align="right">{totalInvestment}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align="right">Home Sale Profit</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell component="th" scope="row">
+                  Home Sale Profit
+                </TableCell>
                 <TableCell align="right">{homeSaleProfit}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align="right">Total Cash Flow</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell component="th" scope="row">
+                  Total Cash Flow
+                </TableCell>
                 <TableCell align="right">{totalCashFlow}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align="right">Total Profit</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell component="th" scope="row">
+                  Total Profit
+                </TableCell>
                 <TableCell align="right">{totalProfit}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell align="right">Total Return on Investment</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell component="th" scope="row">
+                  Return on Investment
+                </TableCell>
                 <TableCell align="right">{totalROI}%</TableCell>
               </TableRow>
             </TableBody>

@@ -13,15 +13,13 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Shared } from "../types/Shared";
-import { MonthlyRevenueAndExpenses } from "../types/MonthlyRevenueAndExpenses";
+import { SpreadSheet } from "../types/SpreadSheet";
 
 export interface MonthlyRevenueAndExpensesProps {
-  sharedData: Shared;
-  monthlyRevenueAndExpensesData: MonthlyRevenueAndExpenses;
+  spreadSheetData: SpreadSheet;
   onUpdateAverageNightlyRate: (averageNightlyRate: number) => void;
-  monthlyMortgage: string;
   onUpdateVacancyRatePercentage: (vacancyRatePercentage: number) => void;
+  monthlyMortgage: string;
   grossMonthlyRent: string;
   onUpdateHOA: (hoa: number) => void;
   onUpdatePropertyTaxes: (propertyTaxes: number) => void;
@@ -48,11 +46,10 @@ export interface MonthlyRevenueAndExpensesProps {
 }
 
 export default function MonthlyRevenueAndExpensesSection({
-  sharedData,
-  monthlyRevenueAndExpensesData,
+  spreadSheetData,
   onUpdateAverageNightlyRate,
-  monthlyMortgage,
   onUpdateVacancyRatePercentage,
+  monthlyMortgage,
   grossMonthlyRent,
   onUpdateHOA,
   onUpdatePropertyTaxes,
@@ -95,7 +92,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={sharedData.averageNightlyRate}
+                    defaultValue={spreadSheetData.averageNightlyRate}
                     onChange={(e) =>
                       onUpdateAverageNightlyRate(+e.target.value)
                     }
@@ -107,12 +104,6 @@ export default function MonthlyRevenueAndExpensesSection({
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Monthly Mortgage (Principal + Interest)
-                </TableCell>
-                <TableCell align="right">{monthlyMortgage}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
                   Vacancy Rate Percentage
                 </TableCell>
                 <TableCell align="right">
@@ -120,7 +111,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={sharedData.vacancyRatePercentage}
+                    defaultValue={spreadSheetData.vacancyRatePercentage}
                     onChange={(e) =>
                       onUpdateVacancyRatePercentage(+e.target.value)
                     }
@@ -138,6 +129,12 @@ export default function MonthlyRevenueAndExpensesSection({
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
+                  Monthly Mortgage (Principal + Interest)
+                </TableCell>
+                <TableCell align="right">{monthlyMortgage}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
                   HOA
                 </TableCell>
                 <TableCell align="right">
@@ -145,7 +142,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.hoa}
+                    defaultValue={spreadSheetData.hoa}
                     onChange={(e) => onUpdateHOA(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -162,7 +159,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.propertyTaxes}
+                    defaultValue={spreadSheetData.propertyTaxes}
                     onChange={(e) => onUpdatePropertyTaxes(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -179,7 +176,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.fireInsurance}
+                    defaultValue={spreadSheetData.fireInsurance}
                     onChange={(e) => onUpdateFireInsurance(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -196,7 +193,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.floodInsurance}
+                    defaultValue={spreadSheetData.floodInsurance}
                     onChange={(e) => onUpdateFloodInsurance(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -213,7 +210,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.pmi}
+                    defaultValue={spreadSheetData.pmi}
                     onChange={(e) => onUpdatePMI(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -230,9 +227,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={
-                      monthlyRevenueAndExpensesData.repairsReservePerMonthAmount
-                    }
+                    defaultValue={spreadSheetData.repairsReservePerMonthAmount}
                     onChange={(e) =>
                       onUpdateRepairsReservePerMonthAmount(+e.target.value)
                     }
@@ -251,9 +246,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={
-                      monthlyRevenueAndExpensesData.capitalExpenditure
-                    }
+                    defaultValue={spreadSheetData.capitalExpenditure}
                     onChange={(e) =>
                       onUpdateCapitalExpenditure(+e.target.value)
                     }
@@ -272,7 +265,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.waterSewer}
+                    defaultValue={spreadSheetData.waterSewer}
                     onChange={(e) => onUpdateWaterSewer(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -289,7 +282,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.garbage}
+                    defaultValue={spreadSheetData.garbage}
                     onChange={(e) => onUpdateGarbage(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -306,7 +299,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.gas}
+                    defaultValue={spreadSheetData.gas}
                     onChange={(e) => onUpdateGas(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -323,7 +316,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.electricty}
+                    defaultValue={spreadSheetData.electricty}
                     onChange={(e) => onUpdateElectricty(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -340,7 +333,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.snowRemoval}
+                    defaultValue={spreadSheetData.snowRemoval}
                     onChange={(e) => onUpdateSnowRemoval(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -357,7 +350,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.lawnCare}
+                    defaultValue={spreadSheetData.lawnCare}
                     onChange={(e) => onUpdateLawnCare(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>
@@ -374,9 +367,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={
-                      monthlyRevenueAndExpensesData.propertyManagementPercentage
-                    }
+                    defaultValue={spreadSheetData.propertyManagementPercentage}
                     onChange={(e) =>
                       onUpdatePropertyManagementPercentage(+e.target.value)
                     }
@@ -401,7 +392,7 @@ export default function MonthlyRevenueAndExpensesSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
-                    defaultValue={monthlyRevenueAndExpensesData.other}
+                    defaultValue={spreadSheetData.other}
                     onChange={(e) => onUpdateOther(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">$</InputAdornment>

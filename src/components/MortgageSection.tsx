@@ -14,12 +14,11 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Exit } from "../types/Exit";
+import { SpreadSheet } from "../types/SpreadSheet";
 
 export interface MortgageSectionProps {
-  exitData: Exit;
-  purchasePrice: string;
-  downPaymentPercentage: number;
+  spreadSheetData: SpreadSheet;
+  formatter: Intl.NumberFormat;
   onUpdateLengthOfLoan: (lengthOfLoan: number) => void;
   onUpdateInterestRate: (interestRate: number) => void;
   initialPrincipal: string;
@@ -27,9 +26,8 @@ export interface MortgageSectionProps {
 }
 
 export function MortgageSection({
-  exitData,
-  purchasePrice,
-  downPaymentPercentage,
+  spreadSheetData,
+  formatter,
   onUpdateLengthOfLoan,
   onUpdateInterestRate,
   initialPrincipal,
@@ -56,29 +54,16 @@ export function MortgageSection({
                 <TableCell component="th" scope="row">
                   Purchase Price
                 </TableCell>
-                <TableCell align="right">{purchasePrice}</TableCell>
+                <TableCell align="right">
+                  {formatter.format(spreadSheetData.purchasePrice)}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
                   Down Payment Percentage
                 </TableCell>
-                <TableCell align="right">{downPaymentPercentage}%</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  Loan Term
-                </TableCell>
                 <TableCell align="right">
-                  <Input
-                    className={input}
-                    id="standard-basic"
-                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                    type="number"
-                    onChange={(e) => onUpdateLengthOfLoan(+e.target.value)}
-                    startAdornment={
-                      <InputAdornment position="start"> Yrs</InputAdornment>
-                    }
-                  ></Input>
+                  {spreadSheetData.downPaymentPercentage}%
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -91,9 +76,28 @@ export function MortgageSection({
                     id="standard-basic"
                     inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                     type="number"
+                    defaultValue={spreadSheetData.interestRatePercentage}
                     onChange={(e) => onUpdateInterestRate(+e.target.value)}
                     startAdornment={
                       <InputAdornment position="start">%</InputAdornment>
+                    }
+                  ></Input>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell component="th" scope="row">
+                  Loan Term
+                </TableCell>
+                <TableCell align="right">
+                  <Input
+                    className={input}
+                    id="standard-basic"
+                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                    type="number"
+                    defaultValue={spreadSheetData.mortgageLoanTerm}
+                    onChange={(e) => onUpdateLengthOfLoan(+e.target.value)}
+                    startAdornment={
+                      <InputAdornment position="start"> Yrs</InputAdornment>
                     }
                   ></Input>
                 </TableCell>

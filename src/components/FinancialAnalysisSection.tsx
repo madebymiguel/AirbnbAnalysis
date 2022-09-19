@@ -13,15 +13,14 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { SpreadSheet } from "../types/SpreadSheet";
 
 export interface FinancialAnalysisSectionProps {
+  spreadSheetData: SpreadSheet;
+  formatter: Intl.NumberFormat;
   // Total Startup Costs
-  purchasePrice: string;
   downPaymentAmount: string;
   closingCostAmount: string;
-  startupCosts: string;
-  holdingCosts: string;
-  renovationCost: string;
   totalCashRequired: string;
   //Short Term Rental
   totalMonthlyRevenue: string;
@@ -36,13 +35,11 @@ export interface FinancialAnalysisSectionProps {
 }
 
 export default function FinancialAnalysisSection({
+  spreadSheetData,
+  formatter,
   // Total Startup Costs
-  purchasePrice,
   downPaymentAmount,
   closingCostAmount,
-  startupCosts,
-  holdingCosts,
-  renovationCost,
   totalCashRequired,
   // Short Term Rental
   totalMonthlyRevenue,
@@ -83,7 +80,9 @@ export default function FinancialAnalysisSection({
                 <TableCell component="th" scope="row">
                   Purchase Price
                 </TableCell>
-                <TableCell align="right">{purchasePrice}</TableCell>
+                <TableCell align="right">
+                  {formatter.format(spreadSheetData.purchasePrice)}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
@@ -101,19 +100,25 @@ export default function FinancialAnalysisSection({
                 <TableCell component="th" scope="row">
                   Startup Costs
                 </TableCell>
-                <TableCell align="right">{startupCosts}</TableCell>
+                <TableCell align="right">
+                  {formatter.format(spreadSheetData.startupCosts)}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
                   Holding Costs (during setup)
                 </TableCell>
-                <TableCell align="right">{holdingCosts}</TableCell>
+                <TableCell align="right">
+                  {formatter.format(spreadSheetData.holdingCosts)}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
                   Renovation Cost
                 </TableCell>
-                <TableCell align="right">{renovationCost}</TableCell>
+                <TableCell align="right">
+                  {formatter.format(spreadSheetData.renovationCost)}
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">

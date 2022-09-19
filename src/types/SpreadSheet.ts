@@ -1,0 +1,34 @@
+export interface SpreadSheet {
+  purchasePrice: number;
+  downPaymentPercentage: number;
+  closingCostsPercentage: number;
+  startupCosts: number;
+  averageNightlyRate: number;
+  vacancyRatePercentage: number;
+  monthlyExpenses: number;
+  interestRatePercentage: number;
+  mortgageLoanTerm: number;
+  holdingCosts: number;
+  renovationCost: number;
+  monthlyRevenue: number;
+  monthlyOperatingExpenses: number;
+  hoa: number;
+  propertyTaxes: number;
+  fireInsurance: number;
+  floodInsurance: number;
+  pmi: number;
+  repairsReservePerMonthAmount: number;
+  capitalExpenditure: number;
+  waterSewer: number;
+  garbage: number;
+  gas: number;
+  electricty: number;
+  snowRemoval: number;
+  lawnCare: number;
+  propertyManagementPercentage: number;
+  other: number;
+  averageAppreciationPercentage: number;
+  salesCostPercentage: number;
+  remainingMortagageBalance: number;
+  yearsHeldonInvestment: number;
+}

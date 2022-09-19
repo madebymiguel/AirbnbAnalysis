@@ -1,38 +1,30 @@
 import React from "react";
 import { css } from "linaria";
-import { Button } from "@mui/material";
 import StartupCostSection from "./StartupCostSection";
 import MonthlyRevenueAndExpensesSection from "./MonthlyRevenueAndExpensesSection";
 import FinancialAnalysisSection from "./FinancialAnalysisSection";
 import ExitSection from "./ExitSection";
 import { MortgageSection } from "./MortgageSection";
-import SaveModal from "./SaveModal";
-import { Shared } from "../types/Shared";
-import { StartupCost } from "../types/StartupCost";
-import { MonthlyRevenueAndExpenses } from "../types/MonthlyRevenueAndExpenses";
-import { Exit } from "../types/Exit";
+import { SpreadSheet } from "../types/SpreadSheet";
 
 export interface AdvancedSpreadSheetProps {
   // Data
-  sharedData: Shared;
-  startupCostData: StartupCost;
-  monthlyRevenueAndExpensesData: MonthlyRevenueAndExpenses;
-  exitData: Exit;
-  // Startup Costs
+  spreadSheetData: SpreadSheet;
+  formatter: Intl.NumberFormat;
+  // Startup Costs Section
   onUpdatePurchasePrice: (purchasePrice: number) => void;
   onUpdateDownPaymentPercentage: (downPaymentPercentage: number) => void;
   downPaymentAmount: string;
-  downPaymentPercentage: number;
   onUpdateClosingCostsPercentage: (closingCostsPercentage: number) => void;
   onUpdateHoldingCosts: (holdingCosts: number) => void;
   onUpdateStartupCosts: (startupCosts: number) => void;
   onUpdateRenovationCost: (renovationCost: number) => void;
   initialInvestment: string;
-  // Monthly Revenue
+  // Monthly Revenue Section
   onUpdateAverageNightlyRate: (averageNightlyRate: number) => void;
-  monthlyMortgage: string;
   onUpdateVacancyRatePercentage: (vacancyRatePercentage: number) => void;
   grossMonthlyRent: string;
+  monthlyMortgage: string;
   onUpdateHOA: (hoa: number) => void;
   onUpdatePropertyTaxes: (propertyTaxes: number) => void;
   onUpdateFireInsurance: (fireInsurance: number) => void;
@@ -55,72 +47,62 @@ export interface AdvancedSpreadSheetProps {
   onUpdateOther: (other: number) => void;
   monthlyExpenses: string;
   monthlyCashflow: string;
-  // Financial Analysis
+  // Moragage Section
+  onUpdateMortgageLoanTerm: (mortgageLoanTerm: number) => void;
+  onUpdateInterestRate: (interestRatePercentage: number) => void;
+  initialPrincipal: string;
+  monthlyPayments: string;
+  // Financial Analysis Section
   // Total Startup Costs
-  purchasePrice: string;
-  // downPaymentAmount is define in startup section
   closingCostAmount: string;
-  startupCosts: string;
-  holdingCosts: string;
-  renovationCost: string;
   totalCashRequired: string;
   //Short Term Rental
   totalMonthlyRevenue: string;
   netMonthlyCashFlow: string;
   netAnnualCashflow: string;
   COCReturnPercentage: number;
-  // Exit
+  breakEvenAverageNightRate: string;
+  breakEvenVacancyRate: number;
+  // Exit Section
   onUpdateYearlyAverageAppreciationPercentage: (
     averageAppreciationPercentage: number
   ) => void;
-  initialMarketValue: string;
   finalSalesPrice: string;
   onUpdateSalesCostPercentage: (salesCostPercentage: number) => void;
   salesCostAmount: string;
   onUpdateremainingMortagageBalance: (
     remainingMortagageBalance: number
   ) => void;
-
   totalInvestment: string;
-  onUpdateYearsHeldonInvestment: (yearsHeldonInvestment: number) => void;
   homeSaleProfit: string;
   cashFlow: string;
   totalProfit: string;
   totalROI: number;
-  // Layout
-  isAdvanced: boolean;
-  onUpdateSpreadSheetView: (isAdvanced: boolean) => void;
-  onUpdateMortgageLoanTerm: (mortgageLoanTerm: number) => void;
-  onUpdateInterestRate: (interestRatePercentage: number) => void;
-  initialPrincipal: string;
-  monthlyPayments: string;
-  remainingPrincipal: string;
-  breakEvenAverageNightRate: string;
-  breakEvenVacancyRate: number;
+  // Extra ??
+  initialMarketValue: string;
   averageNightRate: string;
+  remainingPrincipal: string;
+  onUpdateYearsHeldonInvestment: (yearsHeldonInvestment: number) => void;
 }
 
 export default function AdvancedSpreadSheet({
   // Data
-  sharedData,
-  startupCostData,
-  monthlyRevenueAndExpensesData,
-  exitData,
-  // Startup Costs
+  spreadSheetData,
+  formatter,
+  // Startup Costs Section
   onUpdatePurchasePrice,
   onUpdateDownPaymentPercentage,
   downPaymentAmount,
-  downPaymentPercentage,
   onUpdateClosingCostsPercentage,
   onUpdateHoldingCosts,
   onUpdateStartupCosts,
   onUpdateRenovationCost,
   initialInvestment,
-  // Monthly Revenue
+  // Monthly Revenue Section
   onUpdateAverageNightlyRate,
-  monthlyMortgage,
   onUpdateVacancyRatePercentage,
   grossMonthlyRent,
+  monthlyMortgage,
   onUpdateHOA,
   onUpdatePropertyTaxes,
   onUpdateFireInsurance,
@@ -139,43 +121,37 @@ export default function AdvancedSpreadSheet({
   onUpdateOther,
   monthlyExpenses,
   monthlyCashflow,
-  // Financial Analysis
+  // Moragage Section
+  onUpdateMortgageLoanTerm,
+  onUpdateInterestRate,
+  initialPrincipal,
+  monthlyPayments,
+  // Financial Analysis Section
   // Total Startup Costs
-  purchasePrice,
-  // downPaymentAmount is define in startup section
   closingCostAmount,
-  startupCosts,
-  holdingCosts,
-  renovationCost,
   totalCashRequired,
   //Short Term Rental
   totalMonthlyRevenue,
   netMonthlyCashFlow,
   netAnnualCashflow,
   COCReturnPercentage,
-  // Exit
+  breakEvenAverageNightRate,
+  breakEvenVacancyRate,
+  // Exit Section
   onUpdateYearlyAverageAppreciationPercentage,
-  initialMarketValue,
   finalSalesPrice,
   onUpdateSalesCostPercentage,
   salesCostAmount,
   onUpdateremainingMortagageBalance,
   totalInvestment,
-  onUpdateYearsHeldonInvestment,
   homeSaleProfit,
   cashFlow,
   totalProfit,
   totalROI,
-  // Layout
-  isAdvanced,
-  onUpdateSpreadSheetView,
-  onUpdateMortgageLoanTerm,
-  onUpdateInterestRate,
-  initialPrincipal,
-  monthlyPayments,
+  onUpdateYearsHeldonInvestment,
+  initialMarketValue,
   remainingPrincipal,
-  breakEvenAverageNightRate,
-  breakEvenVacancyRate,
+
   averageNightRate,
 }: AdvancedSpreadSheetProps) {
   // styles
@@ -187,23 +163,15 @@ export default function AdvancedSpreadSheet({
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    max-width: 50rem;
+    max-width: 60rem;
     margin: auto;
-  `;
-
-  const buttonContainer = css`
-    display: flex;
-    justify-content: space-between;
-    max-width: 70rem;
-    margin-top: 1rem;
   `;
 
   return (
     <div className={advanceSpreadSheetContaier}>
       <h1 className={title}>Advanced Rental Property Analysis</h1>
       <StartupCostSection
-        sharedData={sharedData}
-        startupCostData={startupCostData}
+        spreadSheetData={spreadSheetData}
         onUpdatePurchasePrice={onUpdatePurchasePrice}
         onUpdateDownPaymentPercentage={onUpdateDownPaymentPercentage}
         downPaymentAmount={downPaymentAmount}
@@ -213,16 +181,20 @@ export default function AdvancedSpreadSheet({
         onUpdateRenovationCost={onUpdateRenovationCost}
         initialInvestment={initialInvestment}
       />
+      <MortgageSection
+        spreadSheetData={spreadSheetData}
+        formatter={formatter}
+        onUpdateLengthOfLoan={onUpdateMortgageLoanTerm}
+        onUpdateInterestRate={onUpdateInterestRate}
+        initialPrincipal={initialPrincipal}
+        monthlyPayments={monthlyPayments}
+      />
       <MonthlyRevenueAndExpensesSection
-        sharedData={sharedData}
-        monthlyRevenueAndExpensesData={monthlyRevenueAndExpensesData}
+        spreadSheetData={spreadSheetData}
         onUpdateAverageNightlyRate={onUpdateAverageNightlyRate}
-        monthlyMortgage={monthlyMortgage}
-        propertyManagementAmount={propertyManagementAmount}
-        grossMonthlyRent={grossMonthlyRent}
-        monthlyExpenses={monthlyExpenses}
-        monthlyCashflow={monthlyCashflow}
         onUpdateVacancyRatePercentage={onUpdateVacancyRatePercentage}
+        grossMonthlyRent={grossMonthlyRent}
+        monthlyMortgage={monthlyMortgage}
         onUpdateHOA={onUpdateHOA}
         onUpdatePropertyTaxes={onUpdatePropertyTaxes}
         onUpdateFireInsurance={onUpdateFireInsurance}
@@ -241,25 +213,17 @@ export default function AdvancedSpreadSheet({
         onUpdatePropertyManagementPercentage={
           onUpdatePropertyManagementPercentage
         }
+        propertyManagementAmount={propertyManagementAmount}
         onUpdateOther={onUpdateOther}
-      />
-      <MortgageSection
-        exitData={exitData}
-        purchasePrice={purchasePrice}
-        downPaymentPercentage={downPaymentPercentage}
-        onUpdateLengthOfLoan={onUpdateMortgageLoanTerm}
-        onUpdateInterestRate={onUpdateInterestRate}
-        initialPrincipal={initialPrincipal}
-        monthlyPayments={monthlyPayments}
+        monthlyExpenses={monthlyExpenses}
+        monthlyCashflow={monthlyCashflow}
       />
       <FinancialAnalysisSection
+        spreadSheetData={spreadSheetData}
+        formatter={formatter}
         //Total Startup Costs
-        purchasePrice={purchasePrice}
         downPaymentAmount={downPaymentAmount}
         closingCostAmount={closingCostAmount}
-        startupCosts={startupCosts}
-        holdingCosts={holdingCosts}
-        renovationCost={renovationCost}
         totalCashRequired={totalCashRequired}
         //Short Term Rental
         totalMonthlyRevenue={totalMonthlyRevenue}
@@ -267,14 +231,13 @@ export default function AdvancedSpreadSheet({
         netMonthlyCashFlow={netMonthlyCashFlow}
         netAnnualCashflow={netAnnualCashflow}
         COCReturnPercentage={COCReturnPercentage}
-        // break even
         averageNightRate={averageNightRate}
-        vacancyRate={sharedData.vacancyRatePercentage}
+        vacancyRate={spreadSheetData.vacancyRatePercentage}
         breakEvenAverageNightRate={breakEvenAverageNightRate}
         breakEvenVacancyRate={breakEvenVacancyRate}
       />
       <ExitSection
-        exitData={exitData}
+        spreadSheetData={spreadSheetData}
         onUpdateYearlyAverageAppreciationPercentage={
           onUpdateYearlyAverageAppreciationPercentage
         }
@@ -291,15 +254,6 @@ export default function AdvancedSpreadSheet({
         totalProfit={totalProfit}
         totalROI={totalROI}
       />
-
-      <div>
-        <div className={buttonContainer}>
-          <SaveModal />
-          <Button onClick={() => onUpdateSpreadSheetView(isAdvanced)}>
-            Quick Analysis
-          </Button>
-        </div>
-      </div>
     </div>
   );
 }
